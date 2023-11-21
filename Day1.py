@@ -37,4 +37,15 @@
 # Find the Elf carrying the most Calories. How many total Calories is that Elf carrying?
 
 
-input = open('Day01.txt', 'r').readlines()
+
+with open('day01.txt') as elf_file:
+    elfdata_str = elf_file.read()
+    elfdata_list = elfdata_str.strip().split('\n\n')
+    
+max_cal = 0
+for i in elfdata_list:
+  cal = sum(int(cal) for cal in i.split())
+  max_cal = max(max_cal, cal)
+  
+print(max_cal)
+
