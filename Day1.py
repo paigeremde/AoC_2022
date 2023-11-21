@@ -37,3 +37,4 @@
 # Find the Elf carrying the most Calories. How many total Calories is that Elf carrying?
 
 
+input = open('Day01.txt', 'r').readlines()
