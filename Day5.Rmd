@@ -98,12 +98,27 @@ of each stack?
 
 library(tidyverse)
 
+Day5input <- as.tibble(read_fwf("day05.txt", n_max = 8)) %>%
+  mutate(Row = row_number()) %>%
+  arrange(desc(Row)) %>%
+  select(!Row)
 
-Day5input <- read_fwf("day05.txt", n_max = 9)
-  
+Day5Lists <- lapply(Day5input, function(column) as.list(na.omit(column)))
 
-Instructions <- read_delim("day05.txt", skip = 10, col_names =c("x1","box","x3","before","x5","after")) %>%
-  select(box,before,after)
+Instructions <- read_delim("day05.txt", skip = 10, col_names =c("x1","N","x3","F","x5","T")) %>%
+  select(N, `F`, `T`)
+
+for (i in seq_along(Instructions$N)) {
+  NCrates <- Instructions$N[i]
+  From <- Instructions$`F`[i]
+  To <- Instructions$`T`[i]
+  Values <- tail(Day5Lists[[From]], n = NCrates)
+  Values <- rev(Values)
+  Day5Lists[[To]] <- append(Day5Lists[[To]], values = Values, after = length(Day5Lists[[To]]))
+  Day5Lists[[From]] <- head(Day5Lists[[From]], -NCrates)
+}
+
+TopCrates <- as.character(sapply(Day5Lists, function(lst) tail(lst, n = 1)))
 
 
 ```
